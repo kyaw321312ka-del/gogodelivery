@@ -1,58 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# GogoDelivery
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+GogoDelivery is a delivery management system built with Laravel and Vite. It supports multiple user roles for managing shops, assigning orders to bikers, updating delivery statuses, and tracking delivery history across the full workflow.
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project is designed for:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Admins to manage shops, users, bikers, orders, and delivery history
+- Staff users to support admin workflows
+- Shops to create and review delivery orders
+- Bikers to view assigned work and update delivery progress
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Core features include:
 
-## Learning Laravel
+- Multi-role authentication and role-based access
+- Shop and biker management
+- Order creation and assignment workflow
+- Delivery status tracking (`pending`, `onway`, `failed`, `delivered`)
+- Detailed status history logs
+- History exports and PDF reports
+- Order image and signature handling
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tech Stack
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.3+
+- Laravel 13
+- Vite for frontend assets
+- Dompdf for PDF export
+- Eloquent ORM with SQLite/MySQL support
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Project Structure
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+app/               # Application logic and models
+config/            # Laravel configuration
+database/          # Migrations, factories, seeders
+public/            # Public entry files
+resources/         # Blade templates, CSS, JS, and assets
+routes/            # Web routes
+storage/           # Cached and generated files
+tests/             # Automated tests
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Local Setup
 
-## Contributing
+1. Install PHP dependencies:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+```
 
-## Code of Conduct
+2. Install frontend dependencies:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+npm install
+```
 
-## Security Vulnerabilities
+3. Create the environment file and generate the application key:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. Configure your database connection inside `.env`.
+
+5. Run the migrations and seed the default users:
+
+```bash
+php artisan migrate --seed
+```
+
+6. Build the frontend assets:
+
+```bash
+npm run build
+```
+
+7. Start the app:
+
+```bash
+php artisan serve
+```
+
+Open the site at:
+
+```text
+http://localhost:8000
+```
+
+## Default Login Accounts
+
+The database seeder creates the following test accounts:
+
+| Role | Username | Email | Password |
+| --- | --- | --- | --- |
+| Admin | `admin` | `admin@gogodelivery.test` | `admin123` |
+| Shop | `shop1` | `shop@gogodelivery.test` | `shop123` |
+| Biker | `biker1` | `biker@gogodelivery.test` | `biker123` |
+
+You can log in with either the username or the email address.
+
+## Main Routes
+
+- `/login` — login page
+- `/admin/shops` — shop management
+- `/admin/users` — user management
+- `/admin/bikers` — biker management
+- `/admin/history` — delivery tracking and history
+- `/shop/orders` — shop order dashboard
+- `/bikers/ways` — biker assignment dashboard
+
+## Common Commands
+
+```bash
+php artisan migrate
+php artisan db:seed
+php artisan test
+npm run dev
+```
+
+## Notes
+
+- The app redirects users to their role-specific dashboard after login.
+- Delivery history is recorded in dedicated status history tables.
+- PDF exports and order assets are handled through Laravel response logic and the public asset directory.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open source and licensed under the MIT license.
